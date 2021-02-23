@@ -18,7 +18,7 @@ let createParkingLot = async (noOfLot) => {
 }
 
 
-let park = async (registratonNo, color) => {
+let park = async (registratonNo) => {
   if (maxSize === 0) {
     return `parking lot is not initiated`;
   } else if (maxSize === Car.length) {
@@ -27,36 +27,36 @@ let park = async (registratonNo, color) => {
     let slot = availableSlot[0];
     Car.push({
       'slot': slot,
-      'registratonNo': registratonNo,
-      'color': color
+      'registratonNo': registratonNo
     });
-   // console.log("pushed to car",Car);
     availableSlot.shift();
     return `Allocated slot number: ${slot}`
   }
 }
 
-let leave = async (slot) => {
+let leave = async (slot, hour) => {
   slot = parseInt(slot);
   if (maxSize === 0) {
     return "parking lot is not initiated";
   } else if (Car.length > 0) {
 
-    if (await utilFunctions.search(slot, 'slot', Car)) {
+    if (await utilFunctions.search( parseInt(slot), 'slot', Car)) {
 
-      Car = await utilFunctions.remove(slot, 'slot', Car);
+      Car = await utilFunctions.remove( parseInt(slot), 'slot', Car);
 
       // Add a the number back into slot 
-      availableSlot.push(slot);
+      availableSlot.push( parseInt(slot));
       availableSlot.sort();
-      return `Slot  numbmer ${slot} is free`;
+      let remainHour = parseInt(hour) - 2;
+      let totalHour = 10;
+      if (parseInt(remainHour) > 0) {
+        totalHour = parseInt(totalHour) + (parseInt(remainHour) * 10);
+      }
+      return `Registration number with slot numbmer ${slot} is free with Charge ${totalHour}`;
 
     } else {
       return ` Slot ${slot} is already empty `;
     }
-
-    console.log('Car ==>', Car);
-
   } else {
     return `Parking lot is empty`
   }
@@ -67,9 +67,9 @@ let status = async () => {
     return "parking lot is not initiated";
   } else if (Car.length > 0) {
 
-    console.log("Slot No.\tRegistration No.\tColor");
+    console.log("Slot No.\tRegistration No.");
     Car.forEach(function (row) {
-      console.log(row.slot + "\t         " + row.registratonNo + "\t         " + row.color);
+      console.log(row.slot + "\t         " + row.registratonNo);
     });
 
   } else {
@@ -77,86 +77,9 @@ let status = async () => {
   }
 }
 
-let getRegistrationNumbersFromColor = async (color) => {
-
-  if (maxSize === 0) {
-    return "parking lot is not initiated";
-  } else if (Car.length > 0) {
-    let resultSet = [];
-    Car.forEach(function (row) {
-      if (row.color === color) {
-        resultSet.push(row.registratonNo);
-      }
-    });
-
-    let finalResponse = '';
-    if (resultSet === undefined) return `Not found`;
-    for (let i = 0; i < resultSet.length; i++) {
-      if (!(i == resultSet.length - 1)) {
-        finalResponse += resultSet[i] + ","
-      } else {
-        finalResponse += resultSet[i];
-      }
-    }
-    return finalResponse;
-
-  } else {
-    return `Not found`
-  }
-}
-
-let getSlotNumbersFromColor = async (color) => {
-  if (maxSize === 0) {
-    return "parking lot is not initiated";
-  } else if (Car.length > 0) {
-    let resultSet = [];
-    
-    Car.forEach(function (row) {
-      if (row.color === color) {
-        resultSet.push(row.slot);
-      }
-    });
-
-    let finalResponse = '';
-    if (resultSet === undefined) return `Not found`;
-
-    for (let i = 0; i < resultSet.length; i++) {
-      if (!(i == resultSet.length - 1)) {
-        finalResponse += resultSet[i] + ","
-      } else {
-        finalResponse += resultSet[i];
-      }
-    }
-    return finalResponse;
-
-  } else {
-    return `Not found`
-  }
-}
-
-let getSlotNumberFromRegNo = async (registratonNo) => {
-  if (maxSize === 0) {
-    return "parking lot is not initiated";
-  } else if (Car.length > 0) {
-    let resultSet;
-    Car.forEach(function (row) {
-      if (row.registratonNo === registratonNo) {
-        resultSet = row.slot;
-      }
-    });
-    if (resultSet === undefined) return `Not found`
-    return resultSet;
-  } else {
-    return `Not found`
-  }
-}
-
 module.exports = {
   createParkingLot,
   park,
   leave,
-  status,
-  getRegistrationNumbersFromColor,
-  getSlotNumbersFromColor,
-  getSlotNumberFromRegNo,
+  status
 }
