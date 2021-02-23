@@ -1,0 +1,19 @@
+{
+  "name": "parking_lot",
+  "version": "1.0.0",
+  "description": "Parking lot problem",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niteenkurle/parking_lot.git"
+  },
+  "author": "Nitin Kurle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/niteenkurle/parking_lot/issues"
+  },
+  "homepage": "https://github.com/niteenkurle/parking_lot#readme"
+}
