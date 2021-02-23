@@ -4,7 +4,10 @@
   "description": "Parking lot problem",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "mocha"
+  },
+  "directories": {
+      "test": "test"
   },
   "repository": {
     "type": "git",
